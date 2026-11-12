@@ -25,12 +25,16 @@ jobs:
         with:
           channel: stable
 
+
       - name: Android proje dosyalarini hazirla
         run: |
           flutter create --platforms=android --org com.borcasistanim --project-name borc_asistanim /tmp/borc_scaffold
           cp -a /tmp/borc_scaffold/android ./android
-          mkdir -p lib
+          rm -rf lib
+          mkdir lib
           cp main.dart lib/main.dart
+          test -f pubspec.yaml
+          
 
       - name: Paketleri yukle
         run: flutter pub get
