@@ -24,11 +24,13 @@ jobs:
         with:
           channel: stable
 
+      
       - name: Flutter proje dosyalarini hazirla
         run: |
           mkdir -p lib
-          cp main.dart lib/main.dart
-          flutter create --platforms=android --org com.borcasistanim .
+          cp -f main.dart lib/main.dart
+          flutter create --platforms=android --org com.borcasistanim --project-name borc_asistanim --overwrite .
+
 
       - name: Paketleri yukle
         run: flutter pub get
