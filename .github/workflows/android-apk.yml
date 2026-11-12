@@ -4,33 +4,33 @@ name: Android APK
 on:
   workflow_dispatch:
   push:
+    branches: [main, ana]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Kodlari indir
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Java kur
+      - name: Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
-      - name: Flutter kur
+      - name: Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
 
-      
-      - name: Flutter proje dosyalarini hazirla
+      - name: Android proje dosyalarini hazirla
         run: |
+          flutter create --platforms=android --org com.borcasistanim --project-name borc_asistanim /tmp/borc_scaffold
+          cp -a /tmp/borc_scaffold/android ./android
           mkdir -p lib
-          cp -f main.dart lib/main.dart
-          flutter create --platforms=android --org com.borcasistanim --project-name borc_asistanim --overwrite .
-
+          cp main.dart lib/main.dart
 
       - name: Paketleri yukle
         run: flutter pub get
@@ -38,9 +38,8 @@ jobs:
       - name: APK olustur
         run: flutter build apk --release
 
-      - name: APK dosyasini yayinla
+      - name: APK yayinla
         uses: actions/upload-artifact@v4
         with:
           name: BORC-ASISTANIM-APK
           path: build/app/outputs/flutter-apk/app-release.apk
-          
